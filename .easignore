@@ -1,0 +1,42 @@
+# EAS Build ignore file
+# Ignore system directories and temporary files
+
+AppData/
+Temp/
+*.tmp
+*.temp
+
+# Windows system files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Chrome cache
+**/Chrome/User Data/Default/Cache/
+**/Google/Chrome/User Data/
+
+# Android Studio
+**/AndroidStudio*/
+**/Google/AndroidStudio*/
+
+# Temporary files
+**/Local/Temp/
+**/Local/Google/
+**/Local/Microsoft/
+
+# User directories
+../AppData/
+../Desktop/
+../Documents/
+../Downloads/
+../Pictures/
+../Videos/
+../OneDrive/
+../Contacts/
+../Favorites/
+../Searches/
+../.cache/
+../.cursor/
+../.android/
+../.ssh/ 

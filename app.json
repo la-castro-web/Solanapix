@@ -1,0 +1,56 @@
+{
+  "expo": {
+    "name": "SolanaPix",
+    "slug": "solanapix",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "plugins": [
+      "expo-dev-client"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.solanapix.app",
+      "infoPlist": {
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLName": "web3auth",
+            "CFBundleURLSchemes": [
+              "web3auth.solanapix"
+            ]
+          }
+        ]
+      }
+    },
+    "android": {
+      "package": "com.solanapix.app",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "data": [
+            {
+              "scheme": "web3auth.solanapix"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ]
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "scheme": "web3auth.solanapix",
+    "extra": {
+      "eas": {
+        "projectId": "b3d4d89c-1d34-4bc2-a93d-2cb04cff53ca"
+      }
+    },
+    "owner": "brahmaduplomalte"
+  }
+}
