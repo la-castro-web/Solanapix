@@ -6,7 +6,7 @@
 
 ## 🚀 Demo
 
-- **Webapp:** [solanapix-webapp.herokuapp.com](https://solanapix-webapp.herokuapp.com)
+- **Webapp:** []()
 - **Funcionalidades:** Recebimento de pagamentos via QR Code Solana Pay, conversão BRL→USDC, autenticação via Magic Link
 
 ## 📱 Arquitetura
