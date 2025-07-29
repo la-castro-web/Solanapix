@@ -32,19 +32,6 @@ yarn-error.*
 
 # local env files
 .env*.local
-.env
 
 # typescript
 *.tsbuildinfo
-
-# Temporary files
-*.tmp
-*.temp
-AppData/
-Temp/
-
-# Windows system files
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-$RECYCLE.BIN/
