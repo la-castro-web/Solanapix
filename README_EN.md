@@ -6,7 +6,6 @@
 
 ## 🚀 Demo
 
-- **Webapp:** [solanapix-webapp.herokuapp.com](https://solanapix-webapp.herokuapp.com)
 - **Features:** Payment reception via Solana Pay QR Code, BRL→USDC conversion, Magic Link authentication
 
 ## 📱 Architecture
@@ -154,17 +153,13 @@ This project was developed for the **Solana Mobile Hackathon**. Contributions ar
 4. Push to the branch (`git push origin feature/new-feature`)
 5. Open a Pull Request
 
-## 📄 License
 
-MIT License - see [LICENSE](LICENSE) for details.
 
 ## 👨‍💻 Developer
 
-Developed by **Lucas Castro** for the Solana Mobile Hackathon 2025.
+Developed by **Brahma** for the Solana Mobile Hackathon 2025.
 
 - 🐙 GitHub: [@la-castro-web](https://github.com/la-castro-web)
-- 🌐 Demo: [solanapix-webapp.herokuapp.com](https://solanapix-webapp.herokuapp.com)
-
 ---
 
 ## 🏆 Solana Mobile Hackathon
