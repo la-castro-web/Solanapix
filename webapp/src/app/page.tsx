@@ -2,8 +2,12 @@
 
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import BalanceDisplay from '../components/BalanceDisplay';
+import Header from '../components/Header';
+import BottomNavigation from '../components/BottomNavigation';
+import BalanceCard from '../components/BalanceCard';
 import SolanaPayQRCode from '../components/SolanaPayQRCode';
+import DonationSection from '../components/DonationSection';
+import SettingsSection from '../components/SettingsSection';
 
 // Componente de Login
 function LoginForm() {
@@ -30,9 +34,12 @@ function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
+    <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-purple-50 to-green-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-md border border-gray-100">
         <div className="text-center mb-8">
+          <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <span className="text-white font-bold text-2xl">SP</span>
+          </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">SolanaPix</h1>
           <p className="text-gray-600">Pagamentos em USDC via Solana Pay</p>
         </div>
@@ -48,13 +55,13 @@ function LoginForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="seu@email.com"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all"
               required
             />
           </div>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+            <div className="bg-red-50 border border-red-200 rounded-xl p-3">
               <p className="text-red-600 text-sm">{error}</p>
             </div>
           )}
@@ -62,7 +69,7 @@ function LoginForm() {
           <button
             type="submit"
             disabled={isLoading || !email}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white font-semibold py-3 px-4 rounded-lg transition-colors"
+            className="w-full bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 disabled:bg-gray-300 text-white font-semibold py-3 px-4 rounded-xl transition-all"
           >
             {isLoading ? 'Enviando link mágico...' : 'Entrar com Magic Link'}
           </button>
@@ -77,124 +84,72 @@ function LoginForm() {
   );
 }
 
-// Componente do Dashboard
+// Componente do Dashboard Mobile
 function Dashboard() {
-  const { user, logout } = useAuth();
-  const [copied, setCopied] = useState(false);
+  const [activeTab, setActiveTab] = useState('home');
 
-  const handleLogout = async () => {
-    try {
-      await logout();
-    } catch (error) {
-      console.error('Erro ao fazer logout:', error);
-    }
-  };
-
-  const copyAddress = async () => {
-    if (user?.publicAddress && user.publicAddress !== 'N/A') {
-      try {
-        await navigator.clipboard.writeText(user.publicAddress);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      } catch (err) {
-        console.error('Erro ao copiar:', err);
-        // Fallback para navegadores mais antigos
-        const textArea = document.createElement('textarea');
-        textArea.value = user.publicAddress;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      }
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'home':
+        return (
+          <div className="space-y-6">
+            <BalanceCard />
+            <div className="bg-white rounded-2xl p-6 border border-gray-100">
+              <div className="flex items-center space-x-2 mb-4">
+                <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">💡</span>
+                </div>
+                <h2 className="text-lg font-semibold text-gray-900">Dica Rápida</h2>
+              </div>
+              <p className="text-sm text-gray-600">
+                Use a aba "Receber" para gerar QR codes e aceitar pagamentos em USDC via Solana Pay.
+              </p>
+            </div>
+          </div>
+        );
+      
+      case 'receive':
+        return (
+          <div className="space-y-6">
+            <div className="bg-white rounded-2xl p-6 border border-gray-100">
+              <div className="flex items-center space-x-2 mb-4">
+                <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">📱</span>
+                </div>
+                <h2 className="text-lg font-semibold text-gray-900">Receber Pagamento</h2>
+              </div>
+              <SolanaPayQRCode />
+            </div>
+          </div>
+        );
+      
+      case 'donate':
+        return <DonationSection />;
+      
+      case 'settings':
+        return <SettingsSection />;
+      
+      default:
+        return null;
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900">SolanaPix</h1>
-          <button
-            onClick={handleLogout}
-            className="text-gray-600 hover:text-gray-800 transition-colors"
-          >
-            Sair
-          </button>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 py-8">
-        {/* User Info */}
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Sua Conta</h2>
-          <div className="space-y-3">
-            <p className="text-sm text-gray-600">
-              <span className="font-medium">Email:</span> {user?.email}
-            </p>
-            <div>
-              <p className="text-sm text-gray-600 mb-2">
-                <span className="font-medium">Carteira Solana:</span>
-              </p>
-              <div className="flex items-center gap-2 bg-gray-100 p-3 rounded-lg">
-                <p className="text-xs font-mono flex-1 break-all">
-                  {user?.publicAddress}
-                </p>
-                <button
-                  onClick={copyAddress}
-                  className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
-                    copied 
-                      ? 'bg-green-100 text-green-700' 
-                      : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
-                  }`}
-                >
-                  {copied ? '✓ Copiado!' : 'Copiar'}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Balance Card */}
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Saldo</h2>
-       <div className="text-center py-8">
-       <div className="text-4xl font-bold text-green-600 mb-2">
-         <BalanceDisplay />
-         </div>
-       </div>
-      </div>
-
-        {/* Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Receive Payment */}
-          <div className="bg-white rounded-xl shadow-sm p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Receber Pagamento</h3>
-            <div className="text-center py-8 border-2 border-dashed border-gray-200 rounded-lg">
-              <p className="text-gray-500 mb-4">QR Code do Solana Pay</p>
-              {/* Substituir botão pelo componente SolanaPayQRCode */}
-              <SolanaPayQRCode />
-            </div>
-          </div>
-
-          {/* Withdraw */}
-          <div className="bg-white rounded-xl shadow-sm p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Sacar via Pix</h3>
-            <div className="text-center py-8 border-2 border-dashed border-gray-200 rounded-lg">
-              <p className="text-gray-500 mb-4">Converta USDC para Reais</p>
-              <button 
-                disabled
-                className="bg-gray-300 text-gray-500 px-4 py-2 rounded-lg cursor-not-allowed"
-              >
-                Em breve
-              </button>
-            </div>
-          </div>
-        </div>
+    <div className="min-h-screen bg-gray-50 pb-20">
+      <Header 
+        title={
+          activeTab === 'home' ? 'Início' :
+          activeTab === 'receive' ? 'Receber' :
+          activeTab === 'donate' ? 'Doar' :
+          'Configurações'
+        }
+      />
+      
+      <main className="px-4 py-6">
+        {renderTabContent()}
       </main>
+      
+      <BottomNavigation activeTab={activeTab} onTabChange={setActiveTab} />
     </div>
   );
 }
@@ -207,7 +162,9 @@ export default function Home() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+          </div>
           <p className="text-gray-600">Carregando...</p>
         </div>
       </div>
