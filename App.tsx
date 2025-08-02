@@ -63,9 +63,10 @@ export default function App() {
       <StatusBar style="auto" />
       {loading && (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#0066CC" />
-          <Text style={styles.loadingText}>Carregando {CONFIG.APP_NAME}...</Text>
-          <Text style={styles.loadingUrl}>Conectando</Text>
+          <View style={styles.loadingSpinner}>
+            <ActivityIndicator size="large" color="#FFFFFF" />
+          </View>
+          <Text style={styles.loadingText}>Carregando...</Text>
         </View>
       )}
       <WebView
@@ -111,11 +112,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     zIndex: 1,
   },
+  loadingSpinner: {
+    width: 64,
+    height: 64,
+    borderRadius: 16,
+    backgroundColor: '#9C27B0', // Usando roxo para simular o gradiente
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
   loadingText: {
-    marginTop: 16,
-    fontSize: 16,
-    color: '#666',
-    fontWeight: '500',
+    fontSize: 14,
+    color: '#6B7280',
+    textAlign: 'center',
   },
   loadingUrl: {
     marginTop: 8,

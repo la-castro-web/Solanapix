@@ -1,8 +1,18 @@
 'use client';
 
-import { useState } from 'react';
-import { Wallet, QrCode, BarChart3, Heart, Settings } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import React from 'react';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { Wallet, QrCode, Heart, Settings, ArrowUpRight } from 'lucide-react';
+
+interface Tab {
+  id: string;
+  label: string;
+  icon: React.ComponentType<{ size?: number }>;
+  color: string;
+  activeColor: string;
+  bgColor: string;
+  activeBgColor: string;
+}
 
 interface BottomNavigationProps {
   activeTab: string;
@@ -10,40 +20,59 @@ interface BottomNavigationProps {
 }
 
 export default function BottomNavigation({ activeTab, onTabChange }: BottomNavigationProps) {
-  const tabs = [
+  const { t } = useLanguage();
+
+  const tabs: Tab[] = [
     {
       id: 'home',
-      label: 'Início',
+      label: t('nav.home'),
       icon: Wallet,
-      color: 'text-cyan-600',
-      activeColor: 'text-cyan-600',
+      color: 'text-[#6B7280]',
+      activeColor: 'text-[#00BFA6]',
+      bgColor: 'bg-transparent',
+      activeBgColor: 'bg-[#00BFA6]/10',
     },
     {
       id: 'receive',
-      label: 'Receber',
+      label: t('nav.receive'),
       icon: QrCode,
-      color: 'text-purple-600',
-      activeColor: 'text-purple-600',
+      color: 'text-[#6B7280]',
+      activeColor: 'text-[#00BFA6]',
+      bgColor: 'bg-transparent',
+      activeBgColor: 'bg-[#00BFA6]/10',
+    },
+    {
+      id: 'withdraw',
+      label: t('nav.withdraw'),
+      icon: ArrowUpRight,
+      color: 'text-[#6B7280]',
+      activeColor: 'text-[#00BFA6]',
+      bgColor: 'bg-transparent',
+      activeBgColor: 'bg-[#00BFA6]/10',
     },
     {
       id: 'donate',
-      label: 'Doar',
+      label: t('nav.donate'),
       icon: Heart,
-      color: 'text-green-600',
-      activeColor: 'text-green-600',
+      color: 'text-[#6B7280]',
+      activeColor: 'text-[#00BFA6]',
+      bgColor: 'bg-transparent',
+      activeBgColor: 'bg-[#00BFA6]/10',
     },
     {
       id: 'settings',
-      label: 'Config',
+      label: t('nav.settings'),
       icon: Settings,
-      color: 'text-gray-600',
-      activeColor: 'text-gray-800',
+      color: 'text-[#6B7280]',
+      activeColor: 'text-[#00BFA6]',
+      bgColor: 'bg-transparent',
+      activeBgColor: 'bg-[#00BFA6]/10',
     },
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 pb-safe">
-      <div className="flex items-center justify-around px-4 py-2">
+    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2 z-50">
+      <div className="flex justify-around items-center">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -52,28 +81,14 @@ export default function BottomNavigation({ activeTab, onTabChange }: BottomNavig
             <button
               key={tab.id}
               onClick={() => onTabChange(tab.id)}
-              className={cn(
-                "flex flex-col items-center justify-center py-2 px-3 rounded-lg transition-all duration-200 min-w-0 flex-1",
-                isActive 
-                  ? "bg-gray-50" 
-                  : "hover:bg-gray-50"
-              )}
+              className={`flex flex-col items-center space-y-1 px-3 py-2 rounded-lg transition-all duration-200 ${
+                isActive
+                  ? `${tab.activeColor} ${tab.activeBgColor}`
+                  : `${tab.color} ${tab.bgColor}`
+              }`}
             >
-              <Icon 
-                size={24} 
-                className={cn(
-                  "mb-1 transition-colors",
-                  isActive ? tab.activeColor : tab.color
-                )} 
-              />
-              <span 
-                className={cn(
-                  "text-xs font-medium transition-colors",
-                  isActive ? tab.activeColor : "text-gray-500"
-                )}
-              >
-                {tab.label}
-              </span>
+              <Icon size={20} />
+              <span className="text-xs font-medium">{tab.label}</span>
             </button>
           );
         })}
